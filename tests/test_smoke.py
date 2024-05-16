@@ -1,3 +1,3 @@
 
 def test_smoke():
-    pass
+    print('1')
