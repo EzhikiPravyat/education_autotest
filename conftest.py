@@ -12,4 +12,3 @@ def get_fixtures():
     return file_path
 
 pytest_plugins = get_fixtures() #Подключение всех фиксктур в проекту
-print(pytest_plugins)
