@@ -1,24 +1,15 @@
-import glob
-from os.path import join
-from pathlib import Path
-from platform import system
+import os
 
 '''
 Подключение фикстур к проекту
 '''
 def get_fixtures():
-    fixtures = join(Path(__file__).parent, 'fixtures')
+    fixtures_dir = os.path.join(os.path.dirname(__file__), 'fixtures')
     file_path = []
-    for file in glob.glob(f'{fixtures}/*'):
-        if system().lower() in ['linux', 'darwin']:
-            file = file.split('/') 
-        else:
-            file = file.split('\\')
-        file = file[-1].split('.')[0]
-        if file not in ['__init__', '__pycache__']:
-            file_path.append(f'fixtures.{file}')
-        return file_path
-    
-
+    for file in os.listdir(fixtures_dir):
+        if file != '__init__.py' and file != '__pycache__':
+            file_path.append(f'fixtures.{os.path.splitext(file)[0]}')
+    return file_path
 
 pytest_plugins = get_fixtures() #Подключение всех фиксктур в проекту
+print(pytest_plugins)
