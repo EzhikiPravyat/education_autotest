@@ -1,14 +1,23 @@
-import sys, pytest, os, json
-# from dotenv import load_dotenv
-from os.path import join
-from pathlib import Path
+import os
+from dotenv import load_dotenv
 from pytest import fixture
 import requests as req
 
+load_dotenv() #вызов функции для подключения env
+
 @fixture()
-def get_one():
-    '''
-    Тестовая фикстура
-    '''
-    print("i am here")
-    return "1"
+def env():
+    return os.getenv
+
+@fixture()
+def get(headers):
+    def req_get(**kwargs):
+        kwargs['headers'] = headers
+        return req.get(**kwargs)
+    return req_get
+
+@fixture()
+def headers(env):
+    return {
+        "Authorization": env('token_bearer')
+    }

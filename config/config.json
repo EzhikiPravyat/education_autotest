@@ -1,0 +1,7 @@
+{
+    "demo":
+    {
+        "URL" : "https://demo-passport.etpgpb.ru/api/v2",
+        "endpoint": "/dictionaries/oksm"
+    }
+}
