@@ -1,10 +1,10 @@
 import requests as req
 import pytest
 
-def test_get_oksm(get, headers):
+def test_get_oksm(get):
     url = 'https://demo-passport.etpgpb.ru/api/v2/dictionaries/oksm'
 
-    response = get(url=url, headers=headers)
+    response = get(url=url)
     response_json = response.json()
     print(response.status_code)
     print(response.content)
