@@ -16,3 +16,23 @@ def test_get_oksm(get):
         assert type(response_json['requestId']) == str, f'requestId is string'
     except:
         pytest.fail
+
+def test_auth_etp():
+    url = 'https://chernobrivets-gaz.etpgpb.ru/index.php?rpctype=direct&module=default&client=etp'
+
+    body = {
+        "action": "Authentication",
+        "method": "login",
+        "data": [
+            "testpost.anat3",
+            "Privet111",
+            "null",
+            {}
+        ],
+        "type": "rpc",
+        "tid": 7,
+        "token": "4LWnOKNHa9s06076FmuYxA"
+}
+    response = req.post(url=url, json=body)
+    print(response.status_code)
+    print(response.content)
