@@ -17,6 +17,13 @@ def get(headers):
     return req_get
 
 @fixture()
+def post(headers):
+    def req_post(**kwargs):
+        kwargs['headers'] = headers
+        return req.post(**kwargs)
+    return req_post
+
+@fixture()
 def headers(env):
     return {
         "Authorization": env('token_bearer')
