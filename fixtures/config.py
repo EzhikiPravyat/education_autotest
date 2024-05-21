@@ -30,6 +30,12 @@ def put(headers):
         return req.put(**kwargs)
     return req_put
 
+def delete(headers):
+    def req_delete(**kwargs):
+        kwargs['headers'] = headers
+        return req.delete(**kwargs)
+    return req_delete
+
 @fixture()
 def headers(env):
     return {

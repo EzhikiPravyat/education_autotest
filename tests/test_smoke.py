@@ -24,7 +24,6 @@ def test_smoke_fields(get, put):
     print(response.content)
 
     assert response.headers['content-type'] == 'application/json', f'content-type is not application/json'
-
     assert 'data' in response_json
     assert 'errors' in response_json
     assert 'requestId' in response_json
