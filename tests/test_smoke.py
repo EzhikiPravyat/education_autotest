@@ -1,21 +1,56 @@
 import requests as req
 import pytest
-import json
+import re
 
-def test_get_oksm(get):
-    url = 'https://demo-passport.etpgpb.ru/api/v2/dictionaries/oksm'
+def test_smoke_fields(get, put):
+    #url = 'https://demo-passport.etpgpb.ru/api/v2/dictionaries/oksm'
+    #response = get(url=url)
+    url = 'https://demo-passport.etpgpb.ru/api/v2/user/profile'
 
-    response = get(url=url)
+    body = {
+        "firstName": "Shelley",
+        "lastName": "Sloan",
+        "middleName": "Eeooniekkkeee",
+        "timezone": "(UTC+10:00) Asia/Vladivostok",
+        "timezoneTitle": "(UTC+10:00) Владивосток",
+        "phone": "74706805653",
+        "phoneExt": "2",
+        "job": "Генеральный директор"
+}
+    response = put(url=url, json=body)
     response_json = response.json()
+
     print(response.status_code)
     print(response.content)
 
-    try:
-        assert response.status_code == 200, 'Status code is not 200'
-        assert response.headers['content-type'] == 'application/json', f'content-type is not application/json'
-        assert response_json['errors'] == None, f'Errors in not None'
-        assert type(response_json['requestId']) == str, f'requestId is not string'
-    except:
+    assert response.headers['content-type'] == 'application/json', f'content-type is not application/json'
+
+    assert 'data' in response_json
+    assert 'errors' in response_json
+    assert 'requestId' in response_json
+
+    assert isinstance(response_json['requestId'], str), f'requestId is not string'
+    assert bool(re.match(r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$', 
+                            response_json['requestId'])) == True, f'requestId is not UUID'
+    
+    status_codes = [400, 401, 403, 500]
+
+    if (response.status_code == 200):
+        assert response_json['errors'] is None, f'errors is not None'
+
+    elif response.status_code in status_codes:
+        assert response_json['errors'] is not None, f'errors is None'
+        errors = response_json['errors'][0]
+        print(errors)
+        assert isinstance(errors, dict)
+        assert 'title' in errors
+        assert 'detail' in errors
+        assert 'reasonCode' in errors
+        assert isinstance(errors['title'], str)
+        assert isinstance(errors['detail'], str)
+        assert isinstance(errors['reasonCode'], str)
+    else:
+        print('Something wrong')
         pytest.fail
 
 # def test_auth_etp():
