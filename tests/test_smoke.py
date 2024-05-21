@@ -1,6 +1,8 @@
 import requests as req
 import pytest
 import re
+from jsonschema import validate
+#import hypothesis
 
 def test_put_user_profile(put):
     url = 'https://demo-passport.etpgpb.ru/api/v2/user/profile'
@@ -17,8 +19,6 @@ def test_put_user_profile(put):
 }
     response = put(url=url, json=body)
     response_json = response.json()
-    print(response.status_code)
-    print(response.content)
 
     assert response.headers['content-type'] == 'application/json', f'content-type is not application/json'
     assert 'data' in response_json

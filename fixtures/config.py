@@ -10,6 +10,12 @@ def env():
     return os.getenv
 
 @fixture()
+def session():
+    s = req.Session()
+    yield s
+    s.close()
+
+@fixture()
 def get(headers):
     def req_get(**kwargs):
         kwargs['headers'] = headers
