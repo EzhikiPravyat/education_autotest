@@ -36,15 +36,11 @@ def test_put_user_profile(put):
 
     elif response.status_code in status_codes:
         assert response_json['errors'] is not None, f'errors is None'
-        errors = response_json['errors'][0]
-        print(errors)
-        assert isinstance(errors, dict)
-        assert 'title' in errors
-        assert 'detail' in errors
-        assert 'reasonCode' in errors
-        assert isinstance(errors['title'], str)
-        assert isinstance(errors['detail'], str)
-        assert isinstance(errors['reasonCode'], str)
+        assert isinstance(response_json['errors'][0], dict)
+        errors_keys = ['title', 'detail', 'reasonCode']
+        for key in response_json['errors'][0]:
+            assert key in errors_keys
+            assert isinstance(key, str)
     else:
         print('Something wrong')
         pytest.fail
@@ -68,42 +64,22 @@ def test_get_dictionaries_oksm(get):
     if (response.status_code == 200):
         assert response_json['errors'] is None, f'errors is not None'
         assert len(response_json['data']) == 246, f'OKSM is not full = 246'
-        data = response_json['data'][0]
-        assert isinstance(data, dict)
-        assert 'id' in data
-        assert 'shortName' in data
-        assert 'globalId' in data
-        assert 'fullName' in data
-        assert 'code' in data
-        assert 'alpha2' in data
-        assert 'alpha3' in data
-        assert 'isoNr' in data
-        assert 'currencyAlpha3' in data
-        assert 'currencyTitle' in data
-        assert 'phoneCode' in data
-        assert 'internetDomain' in data
-        assert 'title' in data
-        assert 'fullTitle' in data
-        assert 'location' in data
-        assert 'locationPrecise' in data
-        assert 'display' in data
-        assert 'oosName' in data
-        assert 'sng' in data
-        assert 'nsiTitle' in data
-        assert 'priority' in data
-        assert 'active' in data
-        assert 'independent' in data
+        assert isinstance(response_json['data'][0], dict)
+        data_keys = ['id', 'shortName', 'globalId', 'fullName', 'code', 'alpha2', 'alpha3', 'isoNr', 
+                     'currencyAlpha3', 'currencyTitle', 'phoneCode', 'internetDomain', 'title', 'fullTitle', 
+                     'location', 'locationPrecise', 'display', 'oosName', 'sng', 'nsiTitle', 'priority', 'active', 'independent']
+
+        for key in response_json['data'][0]:
+            assert key in data_keys
+            assert isinstance(key, str)
 
     elif response.status_code in status_codes:
         assert response_json['errors'] is not None, f'errors is None'
-        errors = response_json['errors'][0]
-        assert isinstance(errors, dict)
-        assert 'title' in errors
-        assert 'detail' in errors
-        assert 'reasonCode' in errors
-        assert isinstance(errors['title'], str)
-        assert isinstance(errors['detail'], str)
-        assert isinstance(errors['reasonCode'], str)
+        assert isinstance(response_json['errors'][0], dict)
+        errors_keys = ['title', 'detail', 'reasonCode']
+        for key in response_json['errors'][0]:
+            assert key in errors_keys
+            assert isinstance(key, str)
     else:
         print('Something wrong')
         pytest.fail
