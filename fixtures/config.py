@@ -8,16 +8,27 @@ load_dotenv() #вызов функции для подключения env
 
 @fixture()
 def env():
+    '''
+    Получение переменной окружения
+    '''
     return os.getenv
 
 @fixture()
 def session():
+    '''
+    Подключение и отключение сессии
+    '''
     s = req.Session()
+    print('\n', "-" * 70, "Session start", "-" * 70)
     yield s
     s.close()
+    print('\n', "-" * 70, "Session close", "-" * 70)
 
 @fixture()
 def get(headers):
+    '''
+    GET запрос
+    '''
     def req_get(**kwargs):
         kwargs['headers'] = headers
         return req.get(**kwargs)
@@ -25,6 +36,9 @@ def get(headers):
 
 @fixture()
 def post(headers):
+    '''
+    POST запрос
+    '''
     def req_post(**kwargs):
         kwargs['headers'] = headers
         return req.post(**kwargs)
@@ -32,12 +46,18 @@ def post(headers):
 
 @fixture()
 def put(headers):
+    '''
+    PUT запрос
+    '''
     def req_put(**kwargs):
         kwargs['headers'] = headers
         return req.put(**kwargs)
     return req_put
 
 def delete(headers):
+    '''
+    DELETE запрос
+    '''
     def req_delete(**kwargs):
         kwargs['headers'] = headers
         return req.delete(**kwargs)
@@ -45,6 +65,9 @@ def delete(headers):
 
 @fixture()
 def headers(env):
+    '''
+    Передача в headers токена авторизации Authorization
+    '''
     return {
         "Authorization": env('token_bearer')
     }
