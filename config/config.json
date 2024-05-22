@@ -1,14 +1,19 @@
-{
+{   
+    "URL": "https://demo-passport.etpgpb.ru",
     "api_methods": [
       {
-        "URL": "https://demo-passport.etpgpb.ru",
-        "endpoint": "/api/v2/user/profile2",
-        "VALID_SCHEME": "{hello}"
-      },
-      {
-        "URL": "https://demo-passport.etpgpb.ru",
         "endpoint": "/api/v2/user/profile",
-        "VALID_SCHEME": {
+        "body": {
+          "firstName": "Shelley",
+          "lastName": "Sloan",
+          "middleName": "Eeooniekkkeee",
+          "timezone": "(UTC+10:00) Asia/Vladivostok",
+          "timezoneTitle": "(UTC+10:00) Владивосток",
+          "phone": "74706805653",
+          "phoneExt": "2",
+          "job": "Генеральный директор"
+      },
+        "valid_scheme": {
           "type": "object",
           "properties": {
               "data": {"type": "null"},

@@ -50,11 +50,13 @@ def headers(env):
     }
 
 def read_config_json(expected_string):
-    config_file = os.path.join(os.path.dirname(__file__), '..', 'config', 'config.json')
-    with open(config_file, 'r') as f:
-        config = json.load(f)
+    config_file_path = os.path.join(os.path.dirname(__file__), '..', 'config', 'config.json')
+    with open(config_file_path, 'r') as config_file:
+        config = json.load(config_file)
+
     for api_method in config['api_methods']:
+        api_method['url'] = config['URL']
         if api_method['endpoint'] == expected_string:
             return api_method
-        else:
-            None
+
+    return None
