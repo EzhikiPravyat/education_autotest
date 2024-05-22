@@ -55,8 +55,8 @@ def read_config_json(expected_string):
         config = json.load(config_file)
 
     for api_method in config['api_methods']:
-        api_method['url'] = config['URL']
         if api_method['endpoint'] == expected_string:
+            api_method['url'] = config['URL'] + api_method['endpoint']
             return api_method
 
     return None

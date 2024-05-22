@@ -12,7 +12,7 @@
           "phone": "74706805653",
           "phoneExt": "2",
           "job": "Генеральный директор"
-      },
+        },
         "valid_scheme": {
           "type": "object",
           "properties": {
@@ -29,10 +29,13 @@
                       "required": ["title", "detail"]
                   }
               },
-              "requestId": {"type": "string"}
+            "requestId": {"type": "string"}
           },
           "required": ["data", "errors", "requestId"]
         }
+      },
+      {
+        "endpoint": "/api/v2/dictionaries/oksm"
       }
     ]
   }
