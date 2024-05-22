@@ -1,4 +1,5 @@
 import requests as req
+import pytest
 from pytest import fixture
 from pytest import mark
 
@@ -20,10 +21,9 @@ def test_auth_etp():
         "token": "4LWnOKNHa9s06076FmuYxA"
 }
     response = req.post(url=url, json=body)
-    print(response.status_code)
     etpsid = response.cookies['democom_etpsid']
-    print(etpsid)
 
+@mark.usefixtures('session')
 def test_get_token():
     url = 'https://chernobrivets-gaz.etpgpb.ru/index.php?rpctype=direct&module=default&client=etp'
 
@@ -35,11 +35,15 @@ def test_get_token():
         ],
         "type": "rpc",
         "tid": 7,
-        "token": "4LWnOKNHa9s06076FmuYxA"
+        "token": "/pEqG6V34Mb9LKLbPYAUTQ"
 }
     cookies = {
-        "democom_etpsid": "l1ui9ohc4s9qg5rbm2g3orfkf5"
+        "democom_etpsid": "gg5kdd32ec1u1fcbk2tc47fmsi"
     }
     response = req.post(url=url, json=body, cookies=cookies)
+    print(response.cookies)
     print(response.status_code)
-    print(response.content)
+    # if (response.json()['success'] == 'true'):
+    #     etpcode = response.json()['result']['link'].split("=")[1]
+    # else:
+    #     pytest.fail

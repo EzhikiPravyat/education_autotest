@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from pytest import fixture
 import requests as req
+import json
 
 load_dotenv() #вызов функции для подключения env
 
@@ -47,3 +48,13 @@ def headers(env):
     return {
         "Authorization": env('token_bearer')
     }
+
+def read_config_json(expected_string):
+    config_file = os.path.join(os.path.dirname(__file__), '..', 'config', 'config.json')
+    with open(config_file, 'r') as f:
+        config = json.load(f)
+    for api_method in config['api_methods']:
+        if api_method['endpoint'] == expected_string:
+            return api_method
+        else:
+            None
