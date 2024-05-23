@@ -6,8 +6,9 @@ import json
 
 def test_run(session):
     test_auth_etp(session)
-    auth_token = test_get_token(session)
-    test_get_voting_link(auth_token, session)
+    auth_token = test_token(session)
+    link_token =  test_voting_link(auth_token, session)
+    test_auth_ec(link_token, session)
 
 def test_auth_etp(s):
     url = 'https://demo2-gaz.etpgpb.ru/index.php?rpctype=direct&module=default&client=etp'
@@ -27,7 +28,7 @@ def test_auth_etp(s):
     })
     response = s.post(url=url, data=payload)
 
-def test_get_token(s):
+def test_token(s):
     url = 'https://demo2-gaz.etpgpb.ru/index.php?rpctype=direct&module=default&client=etp'
     payload = json.dumps({
         "action": "Index",
@@ -40,7 +41,7 @@ def test_get_token(s):
     response = s.post(url=url, data=payload)
     return response.json()['result']['auth_token']
 
-def test_get_voting_link(auth_token, s):
+def test_voting_link(auth_token, s):
     url = 'https://demo2-gaz.etpgpb.ru/index.php?rpctype=direct&module=default&client=etp'
 
     payload = json.dumps({
@@ -54,5 +55,12 @@ def test_get_voting_link(auth_token, s):
         "token": str(auth_token)
     })
     response = s.post(url=url, data=payload)
-    etpcode = response.json()['result']['link'].split("=")[1]
-    print(etpcode)
+    link_token = response.json()['result']['link'].split("=")[1]
+    return link_token
+
+def test_auth_ec(link_token, s):
+    url = 'https://api-demo-vote.etpgpb.ru/v1/auth/get-auth-data/' + link_token
+
+    response = s.get(url=url)
+    print(response.json()['user']['accessToken'])
+    print(response.text)
