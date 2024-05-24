@@ -13,7 +13,7 @@ def env():
     '''
     return os.getenv
 
-@fixture()
+@fixture(scope='module')
 def session():
     '''
     Подключение и отключение сессии
@@ -54,6 +54,7 @@ def put(headers):
         return req.put(**kwargs)
     return req_put
 
+@fixture
 def delete(headers):
     '''
     DELETE запрос
@@ -71,6 +72,7 @@ def headers(env):
     return {
         "Authorization": env('token_bearer')
     }
+
 
 def read_config_json(expected_string):
     config_file_path = os.path.join(os.path.dirname(__file__), '..', 'config', 'config.json')
