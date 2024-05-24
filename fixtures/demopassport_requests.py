@@ -1,28 +1,8 @@
 import os
-from dotenv import load_dotenv
 from pytest import fixture
 import requests as req
 import json
 
-load_dotenv() #вызов функции для подключения env
-
-@fixture()
-def env():
-    '''
-    Получение переменной окружения
-    '''
-    return os.getenv
-
-@fixture(scope='module')
-def session():
-    '''
-    Подключение и отключение сессии
-    '''
-    s = req.Session()
-    print('\n', "-" * 70, "Session start", "-" * 70)
-    yield s
-    s.close()
-    print('\n', "-" * 70, "Session close", "-" * 70)
 
 @fixture()
 def get(headers):
@@ -34,6 +14,7 @@ def get(headers):
         return req.get(**kwargs)
     return req_get
 
+
 @fixture()
 def post(headers):
     '''
@@ -43,6 +24,7 @@ def post(headers):
         kwargs['headers'] = headers
         return req.post(**kwargs)
     return req_post
+
 
 @fixture()
 def put(headers):
@@ -54,6 +36,7 @@ def put(headers):
         return req.put(**kwargs)
     return req_put
 
+
 @fixture
 def delete(headers):
     '''
@@ -63,6 +46,7 @@ def delete(headers):
         kwargs['headers'] = headers
         return req.delete(**kwargs)
     return req_delete
+
 
 @fixture()
 def headers(env):
