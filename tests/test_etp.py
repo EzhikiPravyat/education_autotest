@@ -10,7 +10,7 @@ def test_auth_etp(session: req.Session):
     payload = json.dumps({
         "action": "Authentication",
         "method": "login",
-        "data": [ "ispolnitelisp", "Test1234", "null", {} ],
+        "data": [ "comission1", "Test1234", "null", {} ],
         "type": "rpc",
         "tid": 7,
         "token": "4LWnOKNHa9s06076FmuYxA"
@@ -49,3 +49,18 @@ def test_auth_ec(session: req.Session):
     url = f"https://api-demo-vote.etpgpb.ru/v1/auth/get-auth-data/{link_token}"
     response = session.get(url)
     print(response.json()['user']['accessToken'])
+
+def test_get_user_guide():
+    headers = {
+        "VOTE-TOKEN": "c8052599c9a6f6d3e6197188df1faac09566b410"
+    }
+    url = "https://api-demo-vote.etpgpb.ru/v1/role"
+    access_roles = ["ROLE_COMMISSION", "ROLE_COMMISSION_CHAIRMAN"]
+    response = req.get(url, headers=headers)
+    role = response.json()[0]
+    url = "https://api-demo-vote.etpgpb.ru/v1/user-guide/ROLE_COMMISSION"
+    response = req.get(url, headers=headers)
+    if role in access_roles:
+        assert response.status_code == 200
+    else:
+        assert response.status_code == 403
