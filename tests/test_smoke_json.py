@@ -1,6 +1,6 @@
 from jsonschema import validate
 from pytest import mark
-from fixtures.config import read_config_json
+from fixtures.etp_requests import read_config_json
 
 @mark.usefixtures('session')
 def test_put_user_profile(put):
