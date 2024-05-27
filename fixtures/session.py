@@ -2,7 +2,7 @@ from pytest import fixture
 import requests as req
 
 
-@fixture(scope='session')
+@fixture()
 def session():
     '''
     Подключение и отключение сессии

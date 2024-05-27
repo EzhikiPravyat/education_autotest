@@ -1,39 +1,38 @@
 import requests as req
-from pytest import fixture, mark
+import pytest
 import json
 
-auth_token = None
-link_token = None
-
-def test_auth_etp(session: req.Session):
+access_tokens = []
+@pytest.mark.parametrize("username, password", [
+    ("ispolnitelisp", "Test1234"),
+    ("rukovoditelruk", "Test1234"),
+    ("comission1", "Test1234"),
+    ("predsedatelpre", "Test1234"),
+    ("user_skz", "Test1234")
+])
+def test_auth_etp(session: req.Session, username: str, password: str):
     url = 'https://demo2-gaz.etpgpb.ru/index.php?rpctype=direct&module=default&client=etp'
     payload = json.dumps({
         "action": "Authentication",
         "method": "login",
-        "data": [ "comission1", "Test1234", "null", {} ],
+        "data": [ username, password, None, {} ],
         "type": "rpc",
         "tid": 7,
         "token": "4LWnOKNHa9s06076FmuYxA"
     })
-    response = session.post(url, data=payload)
+    response_1 = session.post(url, data=payload)
 
-def test_token(session: req.Session):
-    global auth_token
-    url = 'https://demo2-gaz.etpgpb.ru/index.php?rpctype=direct&module=default&client=etp'
     payload = json.dumps({
         "action": "Index",
         "method": "index",
         "data": None,
         "type": "rpc",
         "tid": 13,
-        "token": "0bCWL8aaWIc5gDsY4K5KIg"
+        "token": "4LWnOKNHa9s06076FmuYxA"
     })
-    response = session.post(url, data=payload)
-    auth_token = response.json()['result']['auth_token']
+    response_2 = session.post(url, data=payload)
+    auth_token = response_2.json()['result']['auth_token']
 
-def test_voting_link(session: req.Session):
-    global link_token
-    url = 'https://demo2-gaz.etpgpb.ru/index.php?rpctype=direct&module=default&client=etp'
     payload = json.dumps({
         "action": "User",
         "method": "getVotingLink",
@@ -42,17 +41,18 @@ def test_voting_link(session: req.Session):
         "tid": 7,
         "token": str(auth_token)
     })
-    response = session.post(url, data=payload)
-    link_token = response.json()['result']['link'].split("=")[1]
+    response_3 = session.post(url, data=payload)
+    link_token = response_3.json()['result']['link'].split("=")[1]
 
-def test_auth_ec(session: req.Session):
     url = f"https://api-demo-vote.etpgpb.ru/v1/auth/get-auth-data/{link_token}"
-    response = session.get(url)
-    print(response.json()['user']['accessToken'])
+    response_3 = session.get(url)
+    access_token = response_3.json()['user']['accessToken']
+
+    print(f'access_token for {username} is {access_token}')
 
 def test_get_user_guide():
     headers = {
-        "VOTE-TOKEN": "c8052599c9a6f6d3e6197188df1faac09566b410"
+        "VOTE-TOKEN": "aeb8698d812a24747377714d79485c8ded5a6ebf"
     }
     url = "https://api-demo-vote.etpgpb.ru/v1/role"
     access_roles = ["ROLE_COMMISSION", "ROLE_COMMISSION_CHAIRMAN"]
@@ -60,6 +60,7 @@ def test_get_user_guide():
     role = response.json()[0]
     url = "https://api-demo-vote.etpgpb.ru/v1/user-guide/ROLE_COMMISSION"
     response = req.get(url, headers=headers)
+    print(role)
     if role in access_roles:
         assert response.status_code == 200
     else:
