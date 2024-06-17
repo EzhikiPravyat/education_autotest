@@ -4,8 +4,8 @@ from pytest import fixture
 def valid_scheme_put_user_profile():
     '''
     Схема для /api/v2/user/profile для 
-    1) 200
-    2) 400, 401, 403, 500
+    1) status_code = 200
+    2) status_code = 400, 401, 403, 500
     '''
     return [{
         "type": "object",

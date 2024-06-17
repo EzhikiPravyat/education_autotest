@@ -4,6 +4,9 @@ import os
 
 
 def read_config_json(expected_string):
+    '''
+    Чтение JSOn файла config/config.json
+    '''
     config_file_path = os.path.join(os.path.dirname(__file__), '..', 'config', 'config.json')
     with open(config_file_path, 'r') as config_file:
         config = json.load(config_file)
