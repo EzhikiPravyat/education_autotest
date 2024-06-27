@@ -3,6 +3,8 @@ import pytest
 import json
 
 access_tokens = []
+
+#TODO работает, разнести по фкистурам, придумать как хранить токены из access_tokens для всех тестов
 @pytest.mark.parametrize("username, password", [
     ("ispolnitelisp", "Test1234"),
     ("rukovoditelruk", "Test1234"),
@@ -50,9 +52,10 @@ def test_auth_etp(session: req.Session, username: str, password: str):
 
     print(f'access_token for {username} is {access_token}')
 
+@pytest.mark.parametrize("token", [access_tokens])
 def test_get_user_guide():
     headers = {
-        "VOTE-TOKEN": "aeb8698d812a24747377714d79485c8ded5a6ebf"
+        "VOTE-TOKEN": access_tokens
     }
     url = "https://api-demo-vote.etpgpb.ru/v1/role"
     access_roles = ["ROLE_COMMISSION", "ROLE_COMMISSION_CHAIRMAN"]

@@ -1,7 +1,6 @@
 import requests as req
 import pytest
 import re
-from jsonschema import validate
 #import hypothesis
 
 def test_put_user_profile(put):
